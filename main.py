@@ -13,21 +13,30 @@ def get_mouse_click_coor(x,y):
     print(x,y)
 turtle.onscreenclick(get_mouse_click_coor)
 
-#Game setup
+#Get Data
 guessed_states = []
+data = pandas.read_csv("./data/50_states.csv")
+state_list = data["state"].to_list()
 
+#Game setup
 while len(guessed_states) < 50:
     #User Input
     answer_state = screen.textinput(title=f"{len(guessed_states)}/50 Guess the State",
                                     prompt="What´s another state´s name?").title()
-    print(answer_state)
-    #Check user answer, get coordinates
-    data = pandas.read_csv("./data/50_states.csv")
-    state_list = data["state"].to_list()
+    #Exit the game
+    if answer_state == "Exit":
+        # On Exit Game store remaining states into csv
+        missing_states = []
+        for state in state_list:
+            if state not in guessed_states:
+                missing_states.append(state)
+        states_to_learn = pandas.DataFrame(missing_states)
+        states_to_learn.to_csv("./data/states_to_learn.csv")
+        break
 
+    #Check user answer, get coordinates
     for state in state_list:
         if answer_state == state:
-
             #Create turtle to write name of the state
             t = turtle.Turtle()
             t.hideturtle()
@@ -35,8 +44,6 @@ while len(guessed_states) < 50:
             state_row = data[data.state == answer_state]
             t.goto(state_row.x.item(), state_row.y.item())
             t.write(f"{state}")
+            #Add new hits to guessed list
             if answer_state not in guessed_states:
                 guessed_states.append(state)
-
-turtle.mainloop() #alternative way to keep screen open
-screen.exitonclick()
