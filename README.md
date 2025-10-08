@@ -21,7 +21,7 @@ If you type `"Exit"`, the game ends and automatically creates a `CSV file` conta
 - Learning mode: generates a `states_to_learn.csv` file with all unguessed states for further study
 
 ## 🖼️ Preview
-![Preview - U.S. States Quiz] (./images/preview.png)
+![Preview - U.S. States Quiz](./images/preview.png)
 
 ## 🛠️ Technologies Used
 
